@@ -40,7 +40,7 @@ function optionPage(){
     var tooltipHard = "Player: HP/MP: 75 | Atk: 7~20 | Magic: 10~25 /// Inimigo: HP: 150 | Atk: 13~30 | Magic: 18~35";
 
     var line1 = createDivs() + "Tema: <button type='button' class='btn btn-secondary rounded mx-1' onclick='changeBg(1)'>Claro</button> /<button type='button' class='btn btn-dark rounded mx-1' onclick='changeBg(0)'>Escuro</button>" + closeDivs();
-    var line2 = createDivs() + "Dificuldade ("+ Difficulty +"): <button type='button' class='btn btn-primary rounded mx-1' onclick='setDifficulty(1)' data-toggle='tooltipEasy' title='"+ tooltipEasy +"'>Fácil</button> / <button type='button' class='btn btn-success rounded mx-1' onclick='setDifficulty(2)' data-toggle='tooltipNormal' title='"+ tooltipNormal +"'>Normal</button> / <button type='button' class='btn btn-danger rounded mx-1' onclick='setDifficulty(3)' data-toggle='tooltipHard' title='"+ tooltipHard +"'>Difícil</button>" + closeDivs();
+    var line2 = createDivs() + "Dificuldade ("+ Difficulty +"): <button type='button' class='btn btn-primary rounded mx-1' onclick='setDifficulty(1)' title='"+ tooltipEasy +"'>Fácil</button> / <button type='button' class='btn btn-success rounded mx-1' onclick='setDifficulty(2)' title='"+ tooltipNormal +"'>Normal</button> / <button type='button' class='btn btn-danger rounded mx-1' onclick='setDifficulty(3)' title='"+ tooltipHard +"'>Difícil</button>" + closeDivs();
 
 
     var btn1 = button("danger","menu()","Voltar");
@@ -50,13 +50,8 @@ function optionPage(){
 
 }
 
-$(document).ready(function(){
-    $('[data-toggle="tooltipEasy"]').tooltip();   
-    $('[data-toggle="tooltipNormal"]').tooltip();
-    $('[data-toggle="tooltipHard"]').tooltip();      
-  });
-
 function changeBg(x){
+    localStorage.setItem("background", x);
     if(x == 1){
         document.getElementById("main").className = "bg-secondary";
     } else{
@@ -65,15 +60,16 @@ function changeBg(x){
 }
 
 function setDifficulty(x){
+    localStorage.setItem("difficulty", x);
     if(x == 1){ //Easy
         setPlayer(200, 200, 10, 30, 25, 15, 40, 30, 20);
         setEnemy(100, 20, 18, 13, 25, 20, 15);
         Difficulty = "Fácil";
-    } else if(x == 2){
+    } else if(x == 2){ //Normal
         setPlayer(100, 100, 20, 25, 20, 10, 30, 25, 15);
         setEnemy(100, 25, 20, 10, 30, 25, 15);
         Difficulty = "Normal";
-    } else if(x == 3){
+    } else if(x == 3){ //Hard
         setPlayer(75, 75, 25, 20, 15, 7, 25, 18, 10);
         setEnemy(150, 30, 20, 13, 35, 25, 18);
         Difficulty = "Difícil";
