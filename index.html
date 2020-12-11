@@ -1,0 +1,85 @@
+<!-- developed by Jonas G. Lima
+    Git: https://github.com/LimaJonas
+-->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS import -->
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <!-- Bootstrap JS import -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" ></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <!-- Font awesome for icons -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Game JS -->
+    <script src="js/gameoptions.js"></script>
+    <script src="js/script.js"></script>
+
+    <title>Text n Dungeons</title>
+</head>
+<body onload="startPage()" id="main">
+    
+    <!-- <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="mr-auto">Bootstrap</strong>
+            <small>11 mins ago</small>
+            <button type="button" class="ml-2 mb-1 close" data-dimiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            Hello
+        </div>
+    </div> -->
+
+
+    <div class="container-fluid h-100">
+        <div class="row justify-content-center h-100">
+            <div class="col-md-8 col-xl-6 chat">
+                <a type="button" class="btn btn-warning btn-sm" onclick="startPage()">RESET</a>
+                <div class="card">
+                    <div class="card-header msg_head">
+                        <!-- Life and Mana Bars -->
+                        <span class="text-light">Vida:</span>
+                        <div class="progress" id="life">
+                        </div>
+                        <span class="text-light">Mana:</span>
+                        <div class="progress" id="mana">
+                        </div>
+                        <!-- ------ -->
+                        <hr>
+                        <div class="d-flex bd-highlight">
+                            <div class="user_info">
+                                <span id="title">Chat & Dungeons DEMO</span>
+                            </div>
+                        </div>
+                        <hr>
+                        <!-- Enemy Life bar -->
+                        <span class="text-light">Inimigo:</span>
+                        <div class="progress" id="enemy">
+                        </div>
+                        <!-- ----- -->
+                    </div>
+                    <div class="card-body msg_card_body" id="msg">
+                        <!-- Mensagem -->
+                    </div>
+                    
+                    <div class="card-footer">
+                        <div class="input-group justify-content-center">
+                            <div class="input-group-append" id="btn">      
+                                <!-- Buttons -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        
+        </div>
+    </div>
+</body>
+</html>
