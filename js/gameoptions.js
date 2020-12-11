@@ -15,6 +15,7 @@ var MagicStrong = 25; //d19-10
 var MagicWeak = 15; //d9-2
 
 var Fail = 0; //when player gets d1-2
+var Turn = 0; //0 - Player / 1 - Enemy
 
 // Enemy Default: Normal
 var MaxEnemy = 100;
@@ -34,9 +35,9 @@ function optionPage(){
     
     setTitle("Opções de jogo");
     
-    var tooltipEasy = "Player: HP: 200 | Atk: 15~30 | Magic: 20~40 /// Inimigo: HP: 100 | Atk: 13~20 | Magic: 15~25";
-    var tooltipNormal = "Player: HP: 100 | Atk: 10~25 | Magic: 15~30 /// Inimigo: HP: 100 | Atk: 10~25 | Magic: 15~30";
-    var tooltipHard = "Player: HP: 100 | Atk: 7~20 | Magic: 10~25 /// Inimigo: HP: 150 | Atk: 13~30 | Magic: 18~35";
+    var tooltipEasy = "Player: HP/MP: 200 | Atk: 15~30 | Magic: 20~40 /// Inimigo: HP: 100 | Atk: 13~20 | Magic: 15~25";
+    var tooltipNormal = "Player: HP/MP: 100 | Atk: 10~25 | Magic: 15~30 /// Inimigo: HP: 100 | Atk: 10~25 | Magic: 15~30";
+    var tooltipHard = "Player: HP/MP: 75 | Atk: 7~20 | Magic: 10~25 /// Inimigo: HP: 150 | Atk: 13~30 | Magic: 18~35";
 
     var line1 = createDivs() + "Tema: <button type='button' class='btn btn-secondary rounded mx-1' onclick='changeBg(1)'>Claro</button> /<button type='button' class='btn btn-dark rounded mx-1' onclick='changeBg(0)'>Escuro</button>" + closeDivs();
     var line2 = createDivs() + "Dificuldade ("+ Difficulty +"): <button type='button' class='btn btn-primary rounded mx-1' onclick='setDifficulty(1)' data-toggle='tooltipEasy' title='"+ tooltipEasy +"'>Fácil</button> / <button type='button' class='btn btn-success rounded mx-1' onclick='setDifficulty(2)' data-toggle='tooltipNormal' title='"+ tooltipNormal +"'>Normal</button> / <button type='button' class='btn btn-danger rounded mx-1' onclick='setDifficulty(3)' data-toggle='tooltipHard' title='"+ tooltipHard +"'>Difícil</button>" + closeDivs();
@@ -73,7 +74,7 @@ function setDifficulty(x){
         setEnemy(100, 25, 20, 10, 30, 25, 15);
         Difficulty = "Normal";
     } else if(x == 3){
-        setPlayer(100, 100, 25, 20, 15, 7, 25, 18, 10);
+        setPlayer(75, 75, 25, 20, 15, 7, 25, 18, 10);
         setEnemy(150, 30, 20, 13, 35, 25, 18);
         Difficulty = "Difícil";
     }
@@ -98,7 +99,7 @@ function setPlayer(hp, mp, mc, atkc, atks, atkw, magc, mags, magw){
 }
 function setEnemy(hp, atkc, atks, atkw, magc, mags, magw){
     MaxEnemy = hp;
-    enemyBar = MaxEnemy;
+    EnemyBar = MaxEnemy;
 
     EnemyCritical = atkc;
     EnemyStrong = atks;
@@ -111,31 +112,39 @@ function setEnemy(hp, atkc, atks, atkw, magc, mags, magw){
 
 function life(Damage){
     LifeBar = LifeBar + (Damage);
+    var width = (LifeBar * 100) / MaxLife;
     if(LifeBar > MaxLife){
         LifeBar = MaxLife;
     }
     if(LifeBar <= 0){
-        alert("Game Over");
-        startPage();
+        youLost();
     }
-    document.getElementById("life").innerHTML = "<div class='progress-bar progress-bar-striped progress-bar-animated bg-success' role='progressbar' aria-valuenow='"+ LifeBar +"' aria-valuemin='0' aria-valuemax='"+ MaxLife +"' style='width: "+ LifeBar +"%'>"+LifeBar +"/"+ MaxLife +"</div>";
+    if(LifeBar > 30){
+        document.getElementById("life").innerHTML = "<div class='progress-bar progress-bar-striped progress-bar-animated bg-success' role='progressbar' aria-valuenow='"+ LifeBar +"' aria-valuemin='0' aria-valuemax='"+ MaxLife +"' style='width: "+ width +"%'>"+LifeBar +"/"+ MaxLife +"</div>";
+    } else{
+        document.getElementById("life").innerHTML = "<div class='progress-bar progress-bar-striped progress-bar-animated bg-danger' role='progressbar' aria-valuenow='"+ LifeBar +"' aria-valuemin='0' aria-valuemax='"+ MaxLife +"' style='width: "+ LifeBar +"%'>"+LifeBar +"/"+ MaxLife +"</div>";
+
+    }
 }
 function mana(x){
     ManaBar = ManaBar + (x);
+    var width = (ManaBar * 100) / MaxMana;
+
     if(ManaBar > MaxMana){
         ManaBar = MaxMana;
     }
-    document.getElementById("mana").innerHTML = "<div class='progress-bar progress-bar-striped progress-bar-animated bg-primary' role='progressbar' aria-valuenow='"+ ManaBar +"' aria-valuemin='0' aria-valuemax='"+ MaxMana +"' style='width: "+ ManaBar +"%'>"+ ManaBar +"/"+ MaxMana +"</div>";
+    document.getElementById("mana").innerHTML = "<div class='progress-bar progress-bar-striped progress-bar-animated bg-primary' role='progressbar' aria-valuenow='"+ ManaBar +"' aria-valuemin='0' aria-valuemax='"+ MaxMana +"' style='width: "+ width +"%'>"+ ManaBar +"/"+ MaxMana +"</div>";
 }
 
 function enemy(Damage){
     EnemyBar = EnemyBar + (Damage);
+    var width = (EnemyBar * 100) / MaxEnemy;
+
     if(EnemyBar > MaxEnemy){
         EnemyBar = MaxEnemy;
     }
     if(EnemyBar <= 0){
-        alert("Você venceu");
-        startPage();
+        youWin();
     }
-    document.getElementById("enemy").innerHTML = "<div class='progress-bar progress-bar-striped progress-bar-animated bg-danger' role='progressbar' aria-valuenow='"+ EnemyBar +"' aria-valuemin='0' aria-valuemax='"+ MaxEnemy +"' style='width: "+ EnemyBar +"%'>"+ EnemyBar +"/"+ MaxEnemy +"</div>";
+    document.getElementById("enemy").innerHTML = "<div class='progress-bar progress-bar-striped progress-bar-animated bg-dark' role='progressbar' aria-valuenow='"+ EnemyBar +"' aria-valuemin='0' aria-valuemax='"+ MaxEnemy +"' style='width: "+ width +"%'>"+ EnemyBar +"/"+ MaxEnemy +"</div>";
 }
