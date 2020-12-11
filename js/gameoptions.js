@@ -33,9 +33,14 @@ var Difficulty = "Normal";
 function optionPage(){
     
     setTitle("Opções de jogo");
+    
+    var tooltipEasy = "Player: HP: 200 | Atk: 15~30 | Magic: 20~40 /// Inimigo: HP: 100 | Atk: 13~20 | Magic: 15~25";
+    var tooltipNormal = "Player: HP: 100 | Atk: 10~25 | Magic: 15~30 /// Inimigo: HP: 100 | Atk: 10~25 | Magic: 15~30";
+    var tooltipHard = "Player: HP: 100 | Atk: 7~20 | Magic: 10~25 /// Inimigo: HP: 150 | Atk: 13~30 | Magic: 18~35";
 
     var line1 = createDivs() + "Tema: <button type='button' class='btn btn-secondary rounded mx-1' onclick='changeBg(1)'>Claro</button> /<button type='button' class='btn btn-dark rounded mx-1' onclick='changeBg(0)'>Escuro</button>" + closeDivs();
-    var line2 = createDivs() + "Dificuldade ("+ Difficulty +"): <button type='button' class='btn btn-primary rounded mx-1' onclick='setDifficulty(1)'>Fácil</button> / <button type='button' class='btn btn-success rounded mx-1' onclick='setDifficulty(2)'>Normal</button> / <button type='button' class='btn btn-danger rounded mx-1' onclick='setDifficulty(3)'>Difícil</button>" + closeDivs();
+    var line2 = createDivs() + "Dificuldade ("+ Difficulty +"): <button type='button' class='btn btn-primary rounded mx-1' onclick='setDifficulty(1)' data-toggle='tooltipEasy' title='"+ tooltipEasy +"'>Fácil</button> / <button type='button' class='btn btn-success rounded mx-1' onclick='setDifficulty(2)' data-toggle='tooltipNormal' title='"+ tooltipNormal +"'>Normal</button> / <button type='button' class='btn btn-danger rounded mx-1' onclick='setDifficulty(3)' data-toggle='tooltipHard' title='"+ tooltipHard +"'>Difícil</button>" + closeDivs();
+
 
     var btn1 = button("danger","menu()","Voltar");
 
@@ -43,6 +48,12 @@ function optionPage(){
     document.getElementById("btn").innerHTML = btn1;
 
 }
+
+$(document).ready(function(){
+    $('[data-toggle="tooltipEasy"]').tooltip();   
+    $('[data-toggle="tooltipNormal"]').tooltip();
+    $('[data-toggle="tooltipHard"]').tooltip();      
+  });
 
 function changeBg(x){
     if(x == 1){

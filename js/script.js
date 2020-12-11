@@ -52,7 +52,7 @@ function play(){
 }
 
 function scene1(){
-    var line1 = line("Um monstro de 2 metros de alturas, com corpo parcialmente congelado aparece.");
+    var line1 = line("Um monstro de 2 metros de alturas, com corpo parcialmente de gelo aparece.");
     var line2 = line("Ele dá um rugido forte e feroz. O que você vai fazer?");
 
     var btn1 = button("danger","scene1_attack(1)","Usar espada");
@@ -137,7 +137,6 @@ function scene2(){
             break;
     }
 }
-
 function scene2_attack(type, deflect){
     // 1 - Punch / 2 - Magic
     var dice = Math.floor(Math.random() * 20) + 1; //dice 20
@@ -149,21 +148,43 @@ function scene2_attack(type, deflect){
             var dicePlayer = 0;
     }
     if(dicePlayer >= 19){
-
+        var line1 = line("Ele tenta dar uma investida. Mas você consegue desviar, saindo do caminho do golpe");
     } else{
         if(type == 1){
             if(dice == 20){
-                var line1 = line("Ele consegue dar um soco muito forte em você, causando <b>"+ EnemyCritical +"</b> de dano!");
+                
+                if(deflect == 1){
+                    var line1 = line("Você tenta sair do caminho, porém não foi suficiente. Ele consegue dar um soco muito forte em você, causando <b>"+ EnemyCritical +"</b> de dano!");
+                } else{
+                    var line1 = line("Ele consegue dar um soco muito forte em você, causando <b>"+ EnemyCritical +"</b> de dano!");
+                }
                 life(-EnemyCritical);
                 alert("Golpe critico");
+
             } else if(dice >= 10 && dice <= 19){
-                var line1 = line("Ele consegue dar um soco forte em você, causando <b>"+ EnemyStrong +"</b> de dano!");
+                
+                if(deflect == 1){
+                    var line1 = line("Você tenta sair do caminho, porém não foi suficiente. Ele consegue dar um soco forte em você, causando <b>"+ EnemyStrong +"</b> de dano!");
+                } else{
+                    var line1 = line("Ele consegue dar um soco forte em você, causando <b>"+ EnemyStrong +"</b> de dano!");
+                }
                 life(-EnemyStrong);
+
             } else if(dice >= 3 && dice <= 9){
-                var line1 = line("Ele dá um chute em você, causando <b>"+ EnemyWeak +"</b> de dano!");
-                enemy(-EnemyWeak);
+
+                if(deflect == 1){
+                    var line1 = line("Você tenta sair do caminho, porém não foi suficiente. Ele dá um chute em você, causando <b>"+ EnemyWeak +"</b> de dano!");
+                } else{
+                    var line1 = line("Ele dá um chute em você, causando <b>"+ EnemyWeak +"</b> de dano!");
+                }
+                life(-EnemyWeak);
+
             } else{
-                var line1 = line("Ele tenta dar um chute, porém erra.");
+                if(deflect == 1){
+                    var line1 = line("Você tenta sair do caminho no momento que ele tenta dar um chute com você, fazendo ele errar por pouco!");
+                } else{
+                    var line1 = line("Ele tenta dar um chute, porém erra.");
+                }
                 alert("Falha");
             }
         } else {
@@ -191,3 +212,11 @@ function scene2_attack(type, deflect){
     document.getElementById("btn").innerHTML = btn1;
 }
 
+function scene3(){
+    var line1 = line("Continua");
+
+    var btn1 = button("primary", "startPage()", "Reiniciar");
+
+    document.getElementById("msg").innerHTML = line1;
+    document.getElementById("btn").innerHTML = btn1;
+}
