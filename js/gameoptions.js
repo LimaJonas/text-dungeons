@@ -15,7 +15,6 @@ var MagicStrong = 25; //d19-10
 var MagicWeak = 15; //d9-2
 
 var Fail = 0; //when player gets d1-2
-var Turn = 0; //0 - Player / 1 - Enemy
 
 // Enemy Default: Normal
 var MaxEnemy = 100;
@@ -62,7 +61,7 @@ function changeBg(x){
 function setDifficulty(x){
     localStorage.setItem("difficulty", x);
     if(x == 1){ //Easy
-        setPlayer(200, 200, 10, 30, 25, 15, 40, 30, 20);
+        setPlayer(200, 200, 15, 30, 25, 15, 40, 30, 20);
         setEnemy(100, 20, 18, 13, 25, 20, 15);
         Difficulty = "Fácil";
     } else if(x == 2){ //Normal
@@ -70,7 +69,7 @@ function setDifficulty(x){
         setEnemy(100, 25, 20, 10, 30, 25, 15);
         Difficulty = "Normal";
     } else if(x == 3){ //Hard
-        setPlayer(75, 75, 25, 20, 15, 7, 25, 18, 10);
+        setPlayer(75, 75, 25, 30, 15, 7, 25, 18, 10);
         setEnemy(150, 30, 20, 13, 35, 25, 18);
         Difficulty = "Difícil";
     }
@@ -113,7 +112,8 @@ function life(Damage){
         LifeBar = MaxLife;
     }
     if(LifeBar <= 0){
-        youLost();
+        LifeBar = 0;
+        
     }
     if(LifeBar > 30){
         document.getElementById("life").innerHTML = "<div class='progress-bar progress-bar-striped progress-bar-animated bg-success' role='progressbar' aria-valuenow='"+ LifeBar +"' aria-valuemin='0' aria-valuemax='"+ MaxLife +"' style='width: "+ width +"%'>"+LifeBar +"/"+ MaxLife +"</div>";
@@ -140,7 +140,7 @@ function enemy(Damage){
         EnemyBar = MaxEnemy;
     }
     if(EnemyBar <= 0){
-        youWin();
+        EnemyBar = 0;
     }
     document.getElementById("enemy").innerHTML = "<div class='progress-bar progress-bar-striped progress-bar-animated bg-dark' role='progressbar' aria-valuenow='"+ EnemyBar +"' aria-valuemin='0' aria-valuemax='"+ MaxEnemy +"' style='width: "+ width +"%'>"+ EnemyBar +"/"+ MaxEnemy +"</div>";
 }

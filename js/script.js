@@ -68,12 +68,16 @@ function scene1(){
 }
 
 function playerTurn(){
+    Fail = 0;
     setTitle("<i>O monstro</i> | Sua vez!");
     var line1 = line("O que você fazer?");
 
     var btn1 = button("danger","swordAttack()","Usar espada");
+    if(ManaBar >= ManaCost){
     var btn2 = button("info","magicAttack()","Usar magia");
-
+    } else{
+        var btn2 = button("info","noMana()","User magia");
+    }
     document.getElementById("msg").innerHTML = line1;
     document.getElementById("btn").innerHTML = btn1 + btn2;    
 }
@@ -81,26 +85,79 @@ function playerTurn(){
 function enemyTurn(){
     setTitle("<i>O monstro</i> | Vez dele!");
     var type = Math.floor(Math.random() * 2) + 1; //1 - Punch / 2 - Magic
-    switch(Fail){
-        case 1:
-            var line1 = line("O monstro ri do seu fracasso em tentar ataca-lo.");
-            var line2 = line("Então, muda a feição para raivosa e corre para atacar");
-            var line3 = line("Você ainda não se levantou, por isso não consegue desviar do ataque.");
+    var talk = Math.floor(Math.random() * 5) + 1; //5 talks
+    if(Fail == 1){
+        switch(talk){
+            case 1:
+                var line1 = line("O monstro ri do seu fracasso em tentar ataca-lo.");
+                var line2 = line("Então, muda a feição para raivosa e corre para atacar");
+                var line3 = line("Você ainda não se levantou, por isso não consegue desviar do ataque.");
 
-            var btn1 = button("primary","enemyAttack(type, 0)","Continuar");
+                document.getElementById("msg").innerHTML = line1 + line2 + line3;
+                break;
+            case 2:
+                var line1 = line("- Fracote - disse o monstro ao ver seu erro.");
+                var line2 = line("Ele corre para ataca-lo.");
+
+                document.getElementById("msg").innerHTML = line1 + line2;
+                break;
+            case 3:
+                var line1 = line("- HAHAHAHA - riu o monstro");
+                var line2 = line("Ele começa a correr em sua direção.");
+
+                document.getElementById("msg").innerHTML = line1 + line2;
+                break;
+            case 4:
+                var line1 = line("- Um cego como você não deveria se aventurar sozinho pela floresta. - Disse o monstro em tom irônico.");
+                var line2 = line("Ele se prepara para atacar.");
+                
+                document.getElementById("msg").innerHTML = line1 + line2;
+                break;
+            case 5:
+                var line1 = line("- Fraco. - Disse o monstro.");
+                var line2 = line("Ele se prepara para atacar");
+                
+                document.getElementById("msg").innerHTML = line1 + line2;
+                break;
+        }
+        var btn1 = button("primary","enemyAttack(type, 0)","Continuar");
+        document.getElementById("btn").innerHTML = btn1;
+    }else{            
+        switch(talk){
+            case 1:
+                var line1 = line("O monstro fica zangado e se prepara para um ataque");
+
+                document.getElementById("msg").innerHTML = line1;
+                break;
+            case 2:
+                var line1 = line("O monstro ruge de dor.");
+                var line2 = line("Mas não se deixa abalar, se preparando para um ataque."); 
+                
+                document.getElementById("msg").innerHTML = line1 + line2;
+                break;
+            case 3:
+                var line1 = line("Ele se zanga, vendo o sucesso de seu golpe.");
+                var line2 = line("Mas começa a correr em sua direção, pronto para atacar.");
+                
+                document.getElementById("msg").innerHTML = line1 + line2;
+                break;
+            case 4:
+                var line1 = line("O monstro ignora a dor causada pelo seu golpe e começa a andar em sua direção, com muita raiva.");
             
-            document.getElementById("msg").innerHTML = line1 + line2 + line3;
-            document.getElementById("btn").innerHTML = btn1;     
-            break;
-        case 0:
-            var line1 = line("O monstro fica zangado e se prepara para um ataque");
+                document.getElementById("msg").innerHTML = line1 + line2;
+                break;
+            case 5:
+                var line1 = line("O monstro olha pra você, com expressão de raiva.");
+                var line2 = line("Então, começa a andar em sua direção, se preparando para atacar.");
+                
+                document.getElementById("msg").innerHTML = line1 + line2;
+                break;
 
-            var btn1 = button("warning","enemyAttack(type, 1)","Tentar desviar");
-            var btn2 = button("primary","enemyAttack(type, 0)","Não fazer nada");
-
-            document.getElementById("msg").innerHTML = line1;
-            document.getElementById("btn").innerHTML = btn1 + btn2;     
-            break;
+        }
+                
+        var btn1 = button("warning","enemyAttack(type, 1)","Tentar desviar");
+        var btn2 = button("primary","enemyAttack(type, 0)","Não fazer nada");
+        document.getElementById("btn").innerHTML = btn1 + btn2;     
     }
 }
 
@@ -117,12 +174,18 @@ function swordAttack(){
         var line1 = line("Você se aproxima e consegue dar um golpe fraco no monstro, causando <b>"+ AtkWeak +"</b> de dano!");
         enemy(-AtkWeak);
     } else{
-        var line1 = line("Você se aproxima. Mas antes de atacar tropeça no chão, caindo na frente do monstro.");
+        var line1 = line("Você se aproxima. Mas antes de atacar, você tropeça no chão, caindo na frente do monstro.");
         alert("Falha");
         Fail = 1;
     }
     
-    var btn1 = button("primary","enemyTurn()","Continuar");
+    if(LifeBar <= 0){
+        var btn1 = button("primary", "youLost()","Continuar");
+    } else if(EnemyBar <= 0){
+        var btn1 = button("primary", "youWin()","Continuar");
+    } else{
+        var btn1 = button("primary","enemyTurn()","Continuar");
+    }
 
     document.getElementById("msg").innerHTML = line1;
     document.getElementById("btn").innerHTML = btn1;
@@ -150,12 +213,21 @@ function magicAttack(){
         alert("Falha");
     }
 
-    var btn1 = button("primary","enemyTurn()","Continuar");
+    if(LifeBar <= 0){
+        var btn1 = button("primary", "youLost()","Continuar");
+    } else if(EnemyBar <= 0){
+        var btn1 = button("primary", "youWin()","Continuar");
+    } else{
+        var btn1 = button("primary","enemyTurn()","Continuar");
+    }
 
     document.getElementById("msg").innerHTML = line1;
     document.getElementById("btn").innerHTML = btn1;
 }
 
+function noMana(){
+    alert("Sem magia suficiente!");
+}
 function enemyAttack(type, deflect){
     // 1 - Punch / 2 - Magic
     var dice = Math.floor(Math.random() * 20) + 1; //dice 20
@@ -235,19 +307,33 @@ function enemyAttack(type, deflect){
         }
     }
 
-    Fail = 0;
-
-    var btn1 = button("primary","playerTurn()","Continuar");
-
+    if(LifeBar <= 0){
+        var btn1 = button("primary", "youLost()","Continuar");
+    } else if(EnemyBar <= 0){
+        var btn1 = button("primary", "youWin()","Continuar");
+    } else{
+        var btn1 = button("primary","playerTurn()","Continuar");
+    }
+    
     document.getElementById("msg").innerHTML = line1;
     document.getElementById("btn").innerHTML = btn1;
 }
 
 function youWin(){
-    alert("Você venceu");
-    startPage();
+    alert("Você venceu!");
+    var line1 = line("O monstro cai para trás, derrotado por você.");
+    var line2 = line("<i>Obrigado por jogar!</i>");
+
+    var btn1 = button("primary","startPage()","Reiniciar");
+    document.getElementById("msg").innerHTML = line1 + line2;
+    document.getElementById("btn").innerHTML = btn1;
 }
 function youLost(){
-    alert("Você perdeu");
-    startPage();
+    alert("Você perdeu!");
+    var line1 = line("Você cai para trás, morto pelo monstro.");
+    var line2 = line("<i>Obrigado por jogar!</i>");
+
+    var btn1 = button("primary","startPage()","Reiniciar");
+    document.getElementById("msg").innerHTML = line1 + line2;
+    document.getElementById("btn").innerHTML = btn1;
 }
