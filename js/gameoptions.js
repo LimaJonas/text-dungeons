@@ -4,28 +4,29 @@ var MaxLife = 100;
 var MaxMana = 100;
 var LifeBar = 0;
 var ManaBar = 0;
+var ManaCost = 20;
 // Sword
 var AtkCritical = 25; //d20
 var AtkStrong = 20; //d19-10
-var AtkWeak = 10; //d9-2
+var AtkWeak = 10; //d9-3
 // Fire Magic
 var MagicCritical = 30; //d20
 var MagicStrong = 25; //d19-10
 var MagicWeak = 15; //d9-2
 
-var Fail = 0; //d1
+var Fail = 0; //when player gets d1-2
 
 // Enemy Default: Normal
 var MaxEnemy = 100;
 var EnemyBar = 0;
 // Common Attack
-var EnemyCritical = 25;
-var EnemyStrong = 20;
-var EnemyWeak = 10;
+var EnemyCritical = 25; //d20
+var EnemyStrong = 20; //d19-10
+var EnemyWeak = 10; //d9-2
 // Ice Magic
-var EnemyMagicCritical = 30;
-var EnemyMagicStrong = 25;
-var EnemyMagicWeak = 15;
+var EnemyMagicCritical = 30; //d20
+var EnemyMagicStrong = 25; //d19-10
+var EnemyMagicWeak = 15; //d9-2
 
 var Difficulty = "Normal";
 
@@ -36,7 +37,7 @@ function optionPage(){
     var line1 = createDivs() + "Tema: <button type='button' class='btn btn-secondary rounded mx-1' onclick='changeBg(1)'>Claro</button> /<button type='button' class='btn btn-dark rounded mx-1' onclick='changeBg(0)'>Escuro</button>" + closeDivs();
     var line2 = createDivs() + "Dificuldade ("+ Difficulty +"): <button type='button' class='btn btn-primary rounded mx-1' onclick='setDifficulty(1)'>Fácil</button> / <button type='button' class='btn btn-success rounded mx-1' onclick='setDifficulty(2)'>Normal</button> / <button type='button' class='btn btn-danger rounded mx-1' onclick='setDifficulty(3)'>Difícil</button>" + closeDivs();
 
-    var btn1 = button("danger","menu","Voltar");
+    var btn1 = button("danger","menu()","Voltar");
 
     document.getElementById("msg").innerHTML = line1 + line2;
     document.getElementById("btn").innerHTML = btn1;
@@ -53,15 +54,15 @@ function changeBg(x){
 
 function setDifficulty(x){
     if(x == 1){ //Easy
-        setPlayer(200, 200, 30, 25, 15, 40, 30, 20);
+        setPlayer(200, 200, 10, 30, 25, 15, 40, 30, 20);
         setEnemy(100, 20, 18, 13, 25, 20, 15);
         Difficulty = "Fácil";
     } else if(x == 2){
-        setPlayer(100, 100, 25, 20, 10, 30, 25, 15);
+        setPlayer(100, 100, 20, 25, 20, 10, 30, 25, 15);
         setEnemy(100, 25, 20, 10, 30, 25, 15);
         Difficulty = "Normal";
     } else if(x == 3){
-        setPlayer(100, 100, 20, 15, 7, 25, 18, 10);
+        setPlayer(100, 100, 25, 20, 15, 7, 25, 18, 10);
         setEnemy(150, 30, 20, 13, 35, 25, 18);
         Difficulty = "Difícil";
     }
@@ -71,9 +72,10 @@ function setDifficulty(x){
     optionPage();
 }
 
-function setPlayer(hp, mp, atkc, atks, atkw, magc, mags, magw){
+function setPlayer(hp, mp, mc, atkc, atks, atkw, magc, mags, magw){
     MaxLife = hp;
     MaxMana = mp;
+    ManaCost = mc;
 
     AtkCritical = atkc;
     AtkStrong = atks;
@@ -96,10 +98,14 @@ function setEnemy(hp, atkc, atks, atkw, magc, mags, magw){
     MagicWeak = magw;
 }
 
-function life(x){
-    LifeBar = LifeBar + (x);
+function life(Damage){
+    LifeBar = LifeBar + (Damage);
     if(LifeBar > MaxLife){
         LifeBar = MaxLife;
+    }
+    if(LifeBar <= 0){
+        alert("Game Over");
+        startPage();
     }
     document.getElementById("life").innerHTML = "<div class='progress-bar progress-bar-striped progress-bar-animated bg-success' role='progressbar' aria-valuenow='"+ LifeBar +"' aria-valuemin='0' aria-valuemax='"+ MaxLife +"' style='width: "+ LifeBar +"%'>"+LifeBar +"/"+ MaxLife +"</div>";
 }
@@ -115,6 +121,10 @@ function enemy(Damage){
     EnemyBar = EnemyBar + (Damage);
     if(EnemyBar > MaxEnemy){
         EnemyBar = MaxEnemy;
+    }
+    if(EnemyBar <= 0){
+        alert("Você venceu");
+        startPage();
     }
     document.getElementById("enemy").innerHTML = "<div class='progress-bar progress-bar-striped progress-bar-animated bg-danger' role='progressbar' aria-valuenow='"+ EnemyBar +"' aria-valuemin='0' aria-valuemax='"+ MaxEnemy +"' style='width: "+ EnemyBar +"%'>"+ EnemyBar +"/"+ MaxEnemy +"</div>";
 }
