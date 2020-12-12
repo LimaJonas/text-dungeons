@@ -33,7 +33,7 @@ function startPage(){
 
 function menu(){
 
-    var line1 = createDivs() + "Bem vindo ao Chats & Dungeons" + closeDivs();
+    var line1 = createDivs() + "Bem vindo ao Text Dungeons, um RPG simples em formato de texto" + closeDivs();
     var line2 = createDivs() + "Ainda em desenvolvimento<br><i>PC recomendavel</i>" + closeDivs();
 
     var btn1 = button("success","play()","Jogar");
@@ -58,7 +58,7 @@ function play(){
 }
 
 function scene1(){
-    var line1 = line("Um monstro de 2 metros de alturas, com corpo parcialmente de gelo aparece.");
+    var line1 = line("Um monstro de 2 metros de altura, com corpo parcialmente de gelo aparece.");
     var line2 = line("Ele dá um rugido forte e feroz.");
 
     var btn1 = button("primary","playerTurn()","Continuar");
@@ -161,7 +161,7 @@ function enemyTurn(){
                 var line2 = line("e começa a andar em sua direção, com muita raiva.");
                 break;
             case 5:
-                var line1 = line("O monstro olha pra você, com expressão de raiva.");
+                var line1 = line("O monstro olha pra você com expressão de raiva.");
                 var line2 = line("Então, começa a andar em sua direção, se preparando para atacar.");        
                 break;
                 
