@@ -28,7 +28,7 @@ function startPage(){
         setDifficulty(localStorage.getItem('difficulty'));
     }
     menu();
-    setTitle("Text n Dungeons [PT-BR] <i>v0.1</i>");
+    setTitle("Text n Dungeons [PT-BR] <i>v0.2</i>");
 }
 
 function menu(){
@@ -47,7 +47,7 @@ function play(){
     
     setTitle("<i>O monstro</i>");
 
-    var line1 = line("Você é um aventureiro com uma <b>espada</b> capaz de lançar projeteis em chamas.");
+    var line1 = line("Você é um aventureiro com uma <b>espada</b> capaz de controlar as chamas.");
     var line2 = line("Em uma de suas aventuras, você estava caminhando pelo bosque quando de repente...");
 
     var btn1 = button("primary","scene1()","Continuar");    
@@ -116,7 +116,6 @@ function playerTurn(){
 
 function enemyTurn(){
     setTitle("<i>O monstro</i> | Vez dele!");
-    var type = Math.floor(Math.random() * 2) + 1; //1 - Punch / 2 - Magic
     var talk = Math.floor(Math.random() * 5) + 1; //5 talks
     if(Fail == 1){
         switch(talk){
@@ -141,7 +140,7 @@ function enemyTurn(){
                 var line2 = line("Ele se prepara para atacar");
                 break;
         }
-        var btn1 = button("primary","enemyAttack(type, 0)","Continuar");
+        var btn1 = button("primary","enemyAttack(0)","Continuar");
         document.getElementById("btn").innerHTML = btn1;
     }else{            
         switch(talk){
@@ -168,8 +167,8 @@ function enemyTurn(){
                 
             }
             
-            var btn1 = button("warning","enemyAttack(type, 1)","Tentar desviar");
-            var btn2 = button("primary","enemyAttack(type, 0)","Não fazer nada");
+            var btn1 = button("warning","enemyAttack(1)","Tentar desviar");
+            var btn2 = button("primary","enemyAttack(0)","Não fazer nada");
             document.getElementById("btn").innerHTML = btn1 + btn2;     
     }
     document.getElementById("msg").innerHTML = line1 + line2;
@@ -321,7 +320,7 @@ function magicAttack(){
                 break;
             case 2:
                 var line1 = line("Você deixa sua espada coberta por chamas, corre para acertar o monstro. Mas erra!");
-                var line2 = line("Não causando dano nenhum..");
+                var line2 = line("Não causando dano nenhum.");
                 break;
             case 3:
                 var line1 = line("Você lança diversas bolas de fogo no monstro e acaba errando todas!");
@@ -347,84 +346,185 @@ function magicAttack(){
 function noMana(){
     alert("Sem magia suficiente!");
 }
-function enemyAttack(type, deflect){
-    // 1 - Punch / 2 - Magic
+function enemyAttack(deflect){
+    var type = Math.floor(Math.random() * 2) + 1; //1 - Punch / 2 - Magic
     var dice = Math.floor(Math.random() * 20) + 1; //dice 20
-    switch (deflect){
-        case 1:
-            var dicePlayer = Math.floor(Math.random() * 20) + 1; //Need 19 or 20
-            break;
-        case 0:
-            var dicePlayer = 0;
+    var talk = Math.floor(Math.random() * 3) + 1; //3 talks
+    if(dice <= 2){
+        deflect = 0;
     }
-    if(dicePlayer >= 19){
-        var line1 = line("Ele tenta dar uma investida. Mas você consegue desviar, saindo do caminho do golpe");
-    } else{
-        if(type == 1){
-            if(dice == 20){
-                
-                if(deflect == 1){
-                    var line1 = line("Você tenta sair do caminho, porém não foi suficiente. Ele consegue dar um soco muito forte em você, causando <b>"+ EnemyCritical +"</b> de dano!");
-                } else{
-                    var line1 = line("Ele consegue dar um soco muito forte em você, causando <b>"+ EnemyCritical +"</b> de dano!");
-                }
-                life(-EnemyCritical);
-                alert("Golpe critico");
+    if(deflect == 1 && dice >= 3){
+        var dicePlayer = Math.floor(Math.random() * 20) + 1; //Need 19 or 20
+        if(dicePlayer >= 19){
+            switch(talk){
+                case 1:
+                    var line1 = line("Ele tenta dar uma investida. Mas você consegue desviar!");
+                    var line2 = line("Saindo do caminho do golpe");
+                    break;
+                case 2:
+                    var line1 = line("Rapidamente você pula para o lado.");
+                    var line2 = line("Evitando de ser atacado pelo golpe.");
+                    break;
+                case 3:
+                    var line1 = line("Você corre para o outro lado");
+                    var line2 = line("Evitando de ser golpeado");
+                    break;
+            }    
+            document.getElementById("msg").innerHTML = line1 + line2;
+        } else{
+            switch(talk){
+                case 1:
+                    var line1 = line("Você tenta sair do caminho, porém não foi suficiente.");
+                    break;
+                case 2:
+                    var line1 = line("Você pula para o lado, mas não consegue escapar do golpe!");
+                    break;
+                case 3:
+                    var line1 = line("Você tenta desviar do golpe. Mas não consegue!");
+                    break;
+            }
+        }
+    } 
+
+    if(type == 1){
+        console.log("Tipo 1");
+        // Punch
+        if(dice == 20){     
+            switch(talk){
+                case 1:
+                    var line2 = line("Ele consegue dar um soco muito forte em você.");
+                    var line3 = line("causando <b>"+ EnemyCritical +"</b> de dano!!!");
+                    break;
+                case 2:
+                    var line2 = line("Ele corre ate você e consegue dar um soco muito forte em seu peito.");
+                    var line3 = line("causando <b>"+ EnemyCritical +"</b> de dano!!!");
+                    break;
+                case 3:
+                    var line2 = line("Ele se aproxima de você e consegue dar um soco muito forte na sua cabeça.");
+                    var line3 = line("causando <b>"+ EnemyCritical +"</b> de dano!!!");
+                    break;    
+            }   
+            life(-EnemyCritical);
+            alert("Golpe critico");
 
             } else if(dice >= 10 && dice <= 19){
-                
-                if(deflect == 1){
-                    var line1 = line("Você tenta sair do caminho, porém não foi suficiente. Ele consegue dar um soco forte em você, causando <b>"+ EnemyStrong +"</b> de dano!");
-                } else{
-                    var line1 = line("Ele consegue dar um soco forte em você, causando <b>"+ EnemyStrong +"</b> de dano!");
+                switch(talk){
+                    case 1:
+                        var line2 = line("Ele consegue dar um soco forte em você!");
+                        var line3 = line("Causando <b>"+ EnemyStrong +"</b> de dano!");
+                        break;
+                    case 2:
+                        var line2 = line("Ele se aproxima e dá um chute forte em suas pernas");
+                        var line3 = line("Causando <b>"+ EnemyStrong +"</b> de dano!");
+                        break;
+                    case 3:
+                        var line2 = line("Ele corre até seu lado e dá um golpe forte em seu peito.");
+                        var line3 = line("Causando <b>"+ EnemyStrong +"</b> de dano!");
+                        break;
                 }
                 life(-EnemyStrong);
-
             } else if(dice >= 3 && dice <= 9){
-
-                if(deflect == 1){
-                    var line1 = line("Você tenta sair do caminho, porém não foi suficiente. Ele dá um chute em você, causando <b>"+ EnemyWeak +"</b> de dano!");
-                } else{
-                    var line1 = line("Ele dá um chute em você, causando <b>"+ EnemyWeak +"</b> de dano!");
+                switch(talk){
+                    case 1:
+                        var line2 = line("Ele dá um chute em você.");
+                        var line3 = line("Causando <b>"+ EnemyWeak +"</b> de dano!");
+                        break;
+                    case 2:
+                        var line2 = line("Ele da um soco de raspão em você.");
+                        var line3 = line("Causando <b>"+ EnemyWeak +"</b> de dano!");
+                        break;
+                    case 3:
+                        var line2 = line("Ele chega perto de você e consegue dar um chute fraco em você");
+                        var line3 = line("Causando <b>"+ EnemyWeak +"</b> de dano!");
+                        break;
                 }
                 life(-EnemyWeak);
-
             } else{
-                if(deflect == 1){
-                    var line1 = line("Você tenta sair do caminho no momento que ele tenta dar um chute com você, fazendo ele errar por pouco!");
-                } else{
-                    var line1 = line("Ele tenta dar um chute, porém erra.");
+                switch(talk){
+                    case 1:
+                        var line2 = line("Ele tenta dar um chute. Porém erra.");
+                        var line3 = line("Não causando dano.");
+                        break;
+                    case 2:
+                        var line2 = line("Ele tenta dar um soco. Mas acaba errando.");
+                        var line3 = line("Não causando dano.");
+                        break;
+                    case 3:
+                        var line2 = line("Ele corre em sua direção. Mas acaba tropeçando e não completando o golpe.");
+                        var line3 = line("Não causando dano.");
+                        break;
                 }
                 alert("Falha");
             }
-        } else {
-            if(dice == 20){
-                if(deflect == 1){
-                    var line1 = line("Ele dá um passo atrás e cospe várias pedras de gelo em você, mesmo tentando desviar, todas acertam, causando <b>"+ EnemyMagicCritical +"</b> de dano!!!.");
-                } else{
-                    var line1 = line("Ele dá um passo atrás e cospe várias pedras de gelo em você, com todas acertando. causando <b>"+ EnemyMagicCritical +"</b> de dano!!!.");
-                }
-                life(-EnemyMagicCritical);
-                alert("Dano critico");
-            } else if(dice >= 10 && dice <= 19){
-                if(deflect == 1){
-                    var line1 = line("Ele dá um passo atrás e cospe várias pedras de gelo em você, mesmo tentando desviar, algumas acertam, causando <b>"+ EnemyMagicStrong +"</b> dano.");
-                } else{
-                    var line1 = line("Ele dá um passo atrás e cospe várias pedras de gelo em você, acertando algumas, causando <b>"+ EnemyMagicStrong +"</b> dano.");
-                }
-                life(-EnemyMagicStrong );
-            } else if(dice >= 3 && dice <= 9){
-                if(deflect == 1){
-                    var line1 = line("Ele chega próximo de você, cria uma pedra de gelo com as mãos e lança em você, acertando-o de raspão, causando bem pouco dano.");
-                } else{
-                    var line1 = line("Ele chega próximo de você, cria uma pedra de gelo com as mãos e lança em você, acertando-o de raspão, causando bem pouco dano.");
-                }
-                life(-MagicWeak);
-            } else{
-                var line1 = line("Ele chega próximo de você, cria uma pedra de gelo com as mãos e lança em você, errando por pouco.");
+    } else { 
+        console.log("Tipo 2");
+        // Magic
+        if(dice == 20){
+            switch(talk){
+                case 1:
+                    var line2 = line("Ele dá um passo atrás e cospe várias pedras de gelo em você, com todas acertando.");
+                    var line3 = line("Causando <b>"+ EnemyMagicCritical +"</b> de dano!!!.");
+                    break;
+                case 2:
+                    var line2 = line("Ele cria uma bola de gelo com as mãos e joga em você, acertando na cabeça.");
+                    var line3 = line("Causando <b>"+ EnemyMagicCritical +"</b> de dano!!!.");
+                    break;
+                case 3:
+                    var line2 = line("Ele ruge e seus pés são congelados, deixando você imóvel. O monstro então dá um soco muito forte em você.");
+                    var line3 = line("Causando <b>"+ EnemyMagicCritical +"</b> de dano!!!.");
+            }
+            life(-EnemyMagicCritical);
+            alert("Dano critico");
+        } else if(dice >= 10 && dice <= 19){
+            switch(talk){
+                case 1:
+                    var line2 = line("Ele dá um passo atrás e cospe várias pedras de gelo em você, acertando algumas");
+                    var line3 = line("Causando <b>"+ EnemyMagicStrong +"</b> dano!");
+                    break;
+                case 2:
+                    var line2 = line("Ele ergue as duas mãos, criando uma bola de gelo nelas e lança em você.");
+                    var line3 = line("Causando <b>"+ EnemyMagicStrong +"</b> dano!");
+                    break;
+                case 3:
+                    var line2 = line("Ele cria e lança várias pedras de gelo em você, acertando todas.");
+                    var line3 = line("Causando <b>"+ EnemyMagicStrong +"</b> dano!");
+                    break;
+            }
+            life(-EnemyMagicStrong );
+        } else if(dice >= 3 && dice <= 9){
+            switch(talk){
+                case 1:
+                    var line2 = line("Ele chega próximo de você, cria uma pedra de gelo com as mãos e lança em você, acertando-o de raspão.");
+                    var line3 = line("Causando <b>"+ EnemyMagicWeak +"</b> dano.");
+                    break;
+                case 2:
+                    var line2 = line("Ele cria e lança várias pedras de gelo em você, acertando algumas.");
+                    var line3 = line("Causando <b>"+ EnemyMagicWeak +"</b> dano.");
+                    break;
+                case 3:
+                    var line2 = line("Ele cobre sua mão com gelo e tenta dar um soco em você. Pegando de raspão.");
+                    var line3 = line("Causando <b>"+ EnemyMagicWeak +"</b> dano.");
+                    break;
+            }
+            life(-EnemyMagicWeak);
+        } else{
+            switch(talk){
+                case 1:
+                    var line2 = line("Ele chega próximo de você, cria uma pedra de gelo com as mãos e lança. Mas acaba errando.");
+                    var line3 = line("Não causando dano.");
+                    break;
+                case 2:
+                    var line2 = line("Ele cria e lança várias pedras de gelo em você, errando todas.");
+                    var line3 = line("Não causando dano.");
+                    break;
+                case 3:
+                    var line2 = line("Ele ergue as duas maos criando uma bola de gelo nelas, lançando em você. Mas errando");
+                    var line3 = line("Não causando dano.");
+                    break;
             }
         }
-    }
+    }    
+    
 
     if(LifeBar <= 0){
         var btn1 = button("primary", "youLost()","Continuar");
@@ -434,8 +534,12 @@ function enemyAttack(type, deflect){
         var btn1 = button("primary","playerTurn()","Continuar");
     }
     
-    document.getElementById("msg").innerHTML = line1;
     document.getElementById("btn").innerHTML = btn1;
+    if(deflect == 1){
+        document.getElementById("msg").innerHTML = line1 + line2 + line3;
+    } else{
+        document.getElementById("msg").innerHTML = line2 + line3;
+    }
 }
 
 function youWin(){
