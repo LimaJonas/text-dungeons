@@ -33,14 +33,12 @@ var Difficulty = "Normal";
 function optionPage(){
     
     setTitle("Opções de jogo");
-    
-    var tooltipEasy = "Player: HP/MP: 200 | Atk: 15~30 | Magic: 20~40 /// Inimigo: HP: 100 | Atk: 13~20 | Magic: 15~25";
-    var tooltipNormal = "Player: HP/MP: 100 | Atk: 10~25 | Magic: 15~30 /// Inimigo: HP: 100 | Atk: 10~25 | Magic: 15~30";
-    var tooltipHard = "Player: HP/MP: 75 | Atk: 7~20 | Magic: 10~25 /// Inimigo: HP: 150 | Atk: 13~30 | Magic: 18~35";
+    var tooltipEasy = "Player: HP/MP: 120 | Atk: 13~27 | Magic: 18~35 /// Inimigo: HP: 100 | Atk: 13~25 | Magic: 15~27";
+    var tooltipNormal = "Player: HP/MP: 100 | Atk: 10~25 | Magic: 15~30 /// Inimigo: HP: 120 | Atk: 13~27 | Magic: 17~35";
+    var tooltipHard = "Player: HP/MP: 90 | Atk: 7~20 | Magic: 13~27 /// Inimigo: HP: 150 | Atk: 15~30 | Magic: 17~37";
 
-    var line1 = createDivs() + "Tema: <button type='button' class='btn btn-secondary rounded mx-1' onclick='changeBg(1)'>Claro</button> /<button type='button' class='btn btn-dark rounded mx-1' onclick='changeBg(0)'>Escuro</button>" + closeDivs();
-    var line2 = createDivs() + "Dificuldade ("+ Difficulty +"): <button type='button' class='btn btn-primary rounded mx-1' onclick='setDifficulty(1)' title='"+ tooltipEasy +"'>Fácil</button> / <button type='button' class='btn btn-success rounded mx-1' onclick='setDifficulty(2)' title='"+ tooltipNormal +"'>Normal</button> / <button type='button' class='btn btn-danger rounded mx-1' onclick='setDifficulty(3)' title='"+ tooltipHard +"'>Difícil</button>" + closeDivs();
-
+    var line1 = line("Tema: <button type='button' class='btn btn-secondary rounded mx-1' onclick='changeBg(1)'>Claro</button> /<button type='button' class='btn btn-dark rounded mx-1' onclick='changeBg(0)'>Escuro</button>");
+    var line2 = line("Dificuldade ("+ Difficulty +"): <button type='button' class='btn btn-primary rounded mx-1' data-toggle='modal' data-target='#easyModal'>Fácil</button> / <button type='button' class='btn btn-success rounded mx-1' data-toggle='modal' data-target='#normalModal'>Normal</button> / <button type='button' class='btn btn-danger rounded mx-1' data-toggle='modal' data-target='#hardModal'>Difícil</button>");
 
     var btn1 = button("danger","menu()","Voltar");
 
@@ -61,16 +59,17 @@ function changeBg(x){
 function setDifficulty(x){
     localStorage.setItem("difficulty", x);
     if(x == 1){ //Easy
-        setPlayer(200, 200, 15, 30, 25, 15, 40, 30, 20);
-        setEnemy(100, 20, 18, 13, 25, 20, 15);
+        // names: hp,mp,mc,atkc,atks,atw,magc,mags,magw
+        setPlayer(120, 120, 15, 27, 20, 13, 35, 25, 18);
+        setEnemy(100, 25, 18, 13, 27, 20, 15);
         Difficulty = "Fácil";
     } else if(x == 2){ //Normal
-        setPlayer(100, 100, 20, 25, 20, 10, 30, 25, 15);
-        setEnemy(100, 25, 20, 10, 30, 25, 15);
+        setPlayer(100, 100, 20, 25, 15, 10, 30, 23, 15);
+        setEnemy(120, 27, 20, 13, 38, 25, 17);
         Difficulty = "Normal";
     } else if(x == 3){ //Hard
-        setPlayer(75, 75, 25, 30, 15, 7, 25, 18, 10);
-        setEnemy(150, 30, 20, 13, 35, 25, 18);
+        setPlayer(90, 90, 20, 20, 15, 7, 27, 20, 13);
+        setEnemy(150, 30, 23, 15, 37, 25, 17);
         Difficulty = "Difícil";
     }
     life(200);

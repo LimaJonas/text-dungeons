@@ -32,8 +32,8 @@ function startPage() {
 
 function menu() {
     setTitle("Text Dungeons [PT-BR] <i>v0.2</i>");
-    var line1 = createDivs() + "Bem vindo ao Text Dungeons, um RPG simples em formato de texto" + closeDivs();
-    var line2 = createDivs() + "Ainda em desenvolvimento<br><i>PC recomendavel</i>" + closeDivs();
+    var line1 = createDivs() + "Bem vindo ao Text Dungeons, um RPG simples em formato de texto." + closeDivs();
+    var line2 = createDivs() + "<i>Ainda em desenvolvimento</i>" + closeDivs();
 
     var btn1 = button("success", "play()", "Jogar");
     var btn2 = button("warning", "optionPage()", "Opções");
