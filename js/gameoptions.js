@@ -33,10 +33,7 @@ var Difficulty = "Normal";
 function optionPage(){
     
     setTitle("Opções de jogo");
-    var tooltipEasy = "Player: HP/MP: 120 | Atk: 13~27 | Magic: 18~35 /// Inimigo: HP: 100 | Atk: 13~25 | Magic: 15~27";
-    var tooltipNormal = "Player: HP/MP: 100 | Atk: 10~25 | Magic: 15~30 /// Inimigo: HP: 120 | Atk: 13~27 | Magic: 17~35";
-    var tooltipHard = "Player: HP/MP: 90 | Atk: 7~20 | Magic: 13~27 /// Inimigo: HP: 150 | Atk: 15~30 | Magic: 17~37";
-
+    
     var line1 = line("Tema: <button type='button' class='btn btn-secondary rounded mx-1' onclick='changeBg(1)'>Claro</button> /<button type='button' class='btn btn-dark rounded mx-1' onclick='changeBg(0)'>Escuro</button>");
     var line2 = line("Dificuldade ("+ Difficulty +"): <button type='button' class='btn btn-primary rounded mx-1' data-toggle='modal' data-target='#easyModal'>Fácil</button> / <button type='button' class='btn btn-success rounded mx-1' data-toggle='modal' data-target='#normalModal'>Normal</button> / <button type='button' class='btn btn-danger rounded mx-1' data-toggle='modal' data-target='#hardModal'>Difícil</button>");
 
