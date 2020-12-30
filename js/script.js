@@ -31,7 +31,7 @@ function startPage() {
 }
 
 function menu() {
-    setTitle("Text Dungeons [PT-BR] <i>v0.2</i>");
+    setTitle("Text Dungeons [PT-BR]");
     var line1 = createDivs() + "Bem vindo ao Text Dungeons, um RPG simples em formato de texto." + closeDivs();
     var line2 = createDivs() + "<i>Ainda em desenvolvimento</i>" + closeDivs();
 
