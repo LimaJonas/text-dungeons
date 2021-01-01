@@ -33,3 +33,11 @@ Um jogo de batalha de turno simples, usando um dado de 20 lados virtual para def
 | :-----: | :--------: | :--------------: | :-------------: |
 | Player  |     90     |       7~25       |      15~25      |
 | Inimigo |    150     |      15~23       |      17-37      |
+
+#### Dados
+
+Sempre que escolher atacar, um dado de 20 lados será jogado, dependendo do resultado, o dano de ataque será diferente.
+- 20: Dano crítico
+- entre 10 e 19: Dano forte
+- entre 3 e 9: Dano fraco
+- 1: Falha crítica
