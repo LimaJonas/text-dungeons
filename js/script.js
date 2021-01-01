@@ -102,9 +102,9 @@ function playerTurn() {
         document.getElementById("msg").innerHTML = line2;
     }
 
-    var btn1 = button("danger", "swordAttack()", "Usar espada");
+    var btn1 = button("danger", "selectAttack(1)", "Usar espada");
     if (ManaBar >= ManaCost) {
-        var btn2 = button("info", "magicAttack()", "Usar magia");
+        var btn2 = button("info", "selectAttack(2)", "Usar magia");
     } else {
         var btn2 = button("info", "noMana()", "User magia");
     }
@@ -173,8 +173,59 @@ function enemyTurn() {
     document.getElementById("msg").innerHTML = line1 + line2;
 }
 
-function swordAttack() {
-    var dice = Math.floor(Math.random() * 20) + 1; //dice 20
+function selectAttack(atk){
+    $('#diceModal').modal('toggle');
+
+    var d20 = Math.floor(Math.random() * 20) + 1; //dice 20
+    
+    document.getElementById("dice").innerHTML = 1; 
+    setTimeout(function(){ 
+        document.getElementById("dice").innerHTML = 20; 
+        setTimeout(function(){ 
+            document.getElementById("dice").innerHTML = 4; 
+            setTimeout(function(){ 
+                document.getElementById("dice").innerHTML = 15; 
+                setTimeout(function(){
+                    document.getElementById("dice").innerHTML = 8; 
+                    setTimeout(function(){
+                        document.getElementById("dice").innerHTML = 2;
+                        setTimeout(function(){ 
+                            document.getElementById("dice").innerHTML = 13; 
+                            setTimeout(function(){ 
+                                document.getElementById("dice").innerHTML = 17; 
+                                setTimeout(function(){ 
+                                    document.getElementById("dice").innerHTML = 7; 
+                                    setTimeout(function(){
+                                        document.getElementById("dice").innerHTML = 12; 
+                                        setTimeout(function(){ 
+                                            document.getElementById("dice").style.fontWeight = "900";
+                                            document.getElementById("dice").innerHTML = d20;
+                                            setTimeout(function(){ 
+                                                $('#diceModal').modal('toggle');
+                                                if(atk == 1){
+                                                    swordAttack(d20);
+                                                } else {
+                                                    magicAttack(d20);
+                                                }
+                                            }, 1000);
+                                        }, 100);
+                                    }, 100);
+                                }, 100);
+                            }, 100);
+                        }, 100); 
+                    }, 100);
+                }, 100);
+            }, 100);
+        }, 100);
+    }, 400);
+    // setTimeout(function(){ document.getElementById("dice").innerHTML = 2; }, 300);
+    // $('#diceModal').modal('toggle');
+}
+
+function swordAttack(dice) {
+    // var dice = callDice();
+    // var dice = Math.floor(Math.random() * 20) + 1; //dice 20
+    // alert(dice);
     var talk = Math.floor(Math.random() * 3) + 1; //3 talks
     if (dice == 20) {
         switch (talk) {
@@ -255,8 +306,8 @@ function swordAttack() {
     document.getElementById("btn").innerHTML = btn1;
 }
 
-function magicAttack() {
-    var dice = Math.floor(Math.random() * 20) + 1; //dice 20    
+function magicAttack(dice) {
+    // var dice = Math.floor(Math.random() * 20) + 1; //dice 20    
     var talk = Math.floor(Math.random() * 3) + 1; //3 talks
 
     if (dice == 20) {
